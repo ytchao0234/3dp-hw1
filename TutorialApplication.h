@@ -39,7 +39,10 @@ public:
 protected:
     virtual void chooseSceneManager(void);
     //
+    virtual void createLights(void);
     virtual void createObject(void);
+    virtual void createGroundMesh(void);
+    virtual void createFloor(void);
     virtual void createScene(void);
     // virtual void createCamera(void);
     virtual void createViewports(void);

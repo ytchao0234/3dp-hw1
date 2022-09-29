@@ -29,9 +29,15 @@ void BasicTutorial_00::chooseSceneManager(void)
     mSceneMgr = mRoot->createSceneManager(ST_EXTERIOR_CLOSE);
 }
 
+void BasicTutorial_00::createLights(void)
+{
+    mSceneMgr->setAmbientLight(ColourValue( 0.5, 0.5, 0.5 )); 
+    mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE); 
+}
+
 void BasicTutorial_00::createObject(void)
 {
-    mPet->mEntity = mSceneMgr->createEntity("Pet1", "penguin.mesh");
+    mPet->mEntity = mSceneMgr->createEntity("Pet1", READER_DATA::getMeshName_Pet());
 
     mPet->mSceneNode = mSceneMgr
         ->getRootSceneNode()
@@ -40,10 +46,44 @@ void BasicTutorial_00::createObject(void)
     mPet->mSceneNode->attachObject(mPet->mEntity);
 }
 
+void BasicTutorial_00::createGroundMesh(void)
+{
+    Plane plane(Vector3::UNIT_Y, 0);
+
+    MeshManager::getSingleton().createPlane(
+        "ground",
+        ResourceGroupManager
+        ::DEFAULT_RESOURCE_GROUP_NAME,
+        plane,
+        1500, 1500, 	// width, height
+        20, 20, 		// x- and y-segments
+        true, 		// normal
+        1, 		// num texture sets
+        5, 5, 		// x- and y-tiles
+        Vector3::UNIT_Z	// upward vector
+    );
+}
+
+void BasicTutorial_00::createFloor(void)
+{
+    createGroundMesh();
+
+    Entity* entity = mSceneMgr->createEntity("GroundEntity", "ground");
+    entity->setMaterialName(READER_DATA::getMaterialName_Floor());
+    entity->setCastShadows(false);
+
+    mSceneMgr
+        ->getRootSceneNode()
+        ->createChildSceneNode()
+        ->attachObject(entity);
+}
+
 void BasicTutorial_00::createScene(void)
 {
     READER_DATA::readData();
-    mSceneMgr->setWorldGeometry("terrain.cfg");
+
+    this->createLights();
+    this->createFloor();
     this->createObject();
 }
 
