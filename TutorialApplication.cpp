@@ -63,6 +63,38 @@ void BasicTutorial_00::createObject(void)
     mPet2->mSceneNode->attachObject(mPet2->mEntity);
 }
 
+void BasicTutorial_00::createObjectGroup1_CubeCircle(void)
+{
+    int numberOfItems = 15;
+    int itemGroupRadius = 300;
+    double x = 0, y = 50, z = 0, a = 0, ay = 0;
+    double scaleFactor = 0.3;
+
+    for (int i = 0; i < numberOfItems; i += 1) {
+        x = z = 0;
+        a = i / (double) numberOfItems * PI * 2;
+        ay = a * (double)numberOfItems / 4;
+
+        x = itemGroupRadius * cos(a);
+        y += sin(ay) * 30;
+        z = itemGroupRadius * sin(a);
+
+        String entityName;
+        genNameUsingIndex("CubeCircle", i, entityName);
+        Entity *entity = mSceneMgr->createEntity(
+            entityName, "cube.mesh");
+        entity->setMaterialName("Examples/SceneCubeMap1");
+
+        SceneNode* sceneNode = mSceneMgr
+            ->getRootSceneNode()
+            ->createChildSceneNode();
+
+        sceneNode->setScale(scaleFactor, scaleFactor, scaleFactor);
+        sceneNode->setPosition(x, y, z);
+        sceneNode->attachObject(entity);
+    }
+}
+
 void BasicTutorial_00::createGroundMesh(void)
 {
     Plane plane(Vector3::UNIT_Y, 0);
@@ -102,6 +134,7 @@ void BasicTutorial_00::createScene(void)
     this->createLights();
     this->createFloor();
     this->createObject();
+    this->createObjectGroup1_CubeCircle();
 }
 
 // void BaseApplication::createCamera(void)

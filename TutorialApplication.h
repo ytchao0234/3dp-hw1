@@ -41,6 +41,7 @@ protected:
     //
     virtual void createLights(void);
     virtual void createObject(void);
+    virtual void createObjectGroup1_CubeCircle(void);
     virtual void createGroundMesh(void);
     virtual void createFloor(void);
     virtual void createScene(void);
