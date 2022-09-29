@@ -49,7 +49,8 @@ protected:
     //
     virtual bool frameStarted(const FrameEvent&);
 protected:
-    Pet* mPet;
+    Pet* mPet1;
+    Pet* mPet2;
 };
 
 #endif // #ifndef __BasicTutorial_00_h_

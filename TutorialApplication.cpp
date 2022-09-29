@@ -4,7 +4,7 @@
 // Instructor: Sai-Keung Wong
 //
 #include "TutorialApplication.h"
-#include "BasicTools.h"
+#include "BasicTools.h"mPet1
 
 #include <iostream>
 #include <sstream>
@@ -16,17 +16,19 @@ using namespace Ogre;
 
 BasicTutorial_00::BasicTutorial_00(void)
 {
-    mPet = new Pet();
+    mPet1 = new Pet();
+    mPet2 = new Pet();
 }
 
 BasicTutorial_00::~BasicTutorial_00(void)
 {
-    delete mPet;
+    delete mPet1;
+    delete mPet2;
 }
 
 void BasicTutorial_00::chooseSceneManager(void)
 {
-    mSceneMgr = mRoot->createSceneManager(ST_EXTERIOR_CLOSE);
+    mSceneMgr = mRoot->createSceneManager(ST_GENERIC);
 }
 
 void BasicTutorial_00::createLights(void)
@@ -37,13 +39,28 @@ void BasicTutorial_00::createLights(void)
 
 void BasicTutorial_00::createObject(void)
 {
-    mPet->mEntity = mSceneMgr->createEntity("Pet1", READER_DATA::getMeshName_Pet());
+    mPet1->mEntity = mSceneMgr->createEntity("Pet1", READER_DATA::getMeshName_Pet());
 
-    mPet->mSceneNode = mSceneMgr
+    mPet1->mSceneNode = mSceneMgr
         ->getRootSceneNode()
         ->createChildSceneNode();
 
-    mPet->mSceneNode->attachObject(mPet->mEntity);
+    double scaleFactor = READER_DATA::getMeshScale_Pet();
+    mPet1->mSceneNode->setScale(scaleFactor, scaleFactor, scaleFactor);
+    mPet1->mSceneNode->setPosition(Vector3::UNIT_Y * 100);
+    mPet1->mSceneNode->attachObject(mPet1->mEntity);
+
+// -------------------------------
+
+    mPet2->mEntity = mSceneMgr->createEntity("Pet2", READER_DATA::getMeshName_Pet());
+
+    mPet2->mSceneNode = mSceneMgr
+        ->getRootSceneNode()
+        ->createChildSceneNode();
+
+    mPet2->mSceneNode->setPosition(200, 20, 0);
+    mPet2->mSceneNode->setDirection(Vector3::UNIT_X);
+    mPet2->mSceneNode->attachObject(mPet2->mEntity);
 }
 
 void BasicTutorial_00::createGroundMesh(void)
@@ -57,9 +74,9 @@ void BasicTutorial_00::createGroundMesh(void)
         plane,
         1500, 1500, 	// width, height
         20, 20, 		// x- and y-segments
-        true, 		// normal
-        1, 		// num texture sets
-        5, 5, 		// x- and y-tiles
+        true, 		    // normal
+        1, 		        // num texture sets
+        5, 5, 		    // x- and y-tiles
         Vector3::UNIT_Z	// upward vector
     );
 }
@@ -112,16 +129,6 @@ bool BasicTutorial_00::frameStarted(const FrameEvent& evt)
     bool flg_handled = false;
     mKeyboard->capture();
     mMouse->capture();
-
-    if (!mKeyboard->isKeyDown(OIS::KC_M))
-    {
-        mPet->mActivate = true;
-    }
-    else if (mPet->mActivate)
-    {
-        mPet->translate(evt.timeSinceLastFrame);
-        mPet->mActivate = false;
-    }
 
     return true;
 }

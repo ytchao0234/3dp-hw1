@@ -53,6 +53,11 @@ void READER_DATA::readData()
             mYawAngleDegreeOffset_Pet = value;
         }
 
+        if (key.compare("MESH_SCALE_PET") == 0) {
+            *fp >> value;
+            mMeshScale_Pet = value;
+        }
+
         if (key.compare("AUTO_PLACE_OBJECT") == 0) {
             *fp >> vstring;
 

@@ -86,7 +86,8 @@ void BaseApplication::createCamera(void)
 	*/
 
 	
-    mCamera->setPosition(Ogre::Vector3(0,80,1000));
+    // mCamera->setPosition(Ogre::Vector3(0,80,1000));
+    mCamera->setPosition(Ogre::Vector3(0,200,1000));
     mCamera->lookAt(Ogre::Vector3(0,0,0));
 
     mCamera->setNearClipDistance(5);
