@@ -136,7 +136,3 @@ void READER_DATA::report()
     cout << "mAimAtSphereAngleDeviation:\t" <<  mAimAtSphereAngleDeviation << endl;
     cout << "=======================================" << endl;
 }
-
-
-
-

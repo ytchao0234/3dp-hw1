@@ -11,7 +11,6 @@
 
 class READER_DATA {
 protected:
-	
 	static std::string mMeshName_Pet;
     static double mYawAngleDegreeOffset_Pet;
     static double mMeshScale_Pet;
@@ -28,7 +27,6 @@ public:
 	READER_DATA();
 	static void readData();
     //
-
 	static std::string getMeshName_Pet();
     static double getYawAngleDegreeOffset_Pet();
     static double getMeshScale_Pet();
@@ -36,12 +34,11 @@ public:
     //
 	static std::string getMaterialName_Floor();
 	static std::string getMaterialName_Wall();
-
     //
     static double getAimAtSphereAngleDeviation( );
-    	static bool isEnabledShadow( );
-//
-static void report();
+    static bool isEnabledShadow( );
+    //
+    static void report();
 };
 
 #endif
