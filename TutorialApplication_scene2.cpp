@@ -18,13 +18,26 @@ void BasicTutorial_00::createLights_01(void)
     Light *light3;
     light3 = mSceneMgrArray[1]->createLight("Light3");
     light3->setType(Light::LT_POINT);
-    light3->setPosition(Vector3(0, 350, 0.001));
-    light3->setDiffuseColour(0.0, 0.0, 1.0);
-    light3->setSpecularColour(0.0, 0.0, 1.0);
+    light3->setPosition(Vector3(-50, 250, 100));
+    light3->setDiffuseColour(1.0, 1.0, 1.0);
+    light3->setSpecularColour(1.0, 1.0, 1.0);
 }
 
 void BasicTutorial_00::createObject_01(void)
 {
+    Entity *entity = mSceneMgrArray[1]->createEntity(
+        "Sphere0", "sphere.mesh");
+    entity->setMaterialName("Template/Green");
+
+    SceneNode* sceneNode = mSceneMgrArray[1]
+        ->getRootSceneNode()
+        ->createChildSceneNode();
+
+    double scaleFactorX = 0.2, scaleFactorY = 0.5, scaleFactorZ = 0.8;
+
+    sceneNode->setScale(scaleFactorX, scaleFactorY, scaleFactorZ);
+    sceneNode->setPosition(50, 50, 0);
+    sceneNode->attachObject(entity);
 }
 
 void BasicTutorial_00::createGroundMesh_01(void)
@@ -62,6 +75,7 @@ void BasicTutorial_00::createFloor_01(void)
 void BasicTutorial_00::createScene_01(void)
 {
     mSceneMgr = mSceneMgrArray[1];
+    this->createObject_01();
     this->createLights_01();
     this->createFloor_01();
 }
