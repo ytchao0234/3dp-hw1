@@ -179,3 +179,70 @@ void BasicTutorial_00::createViewport_00(void)
 
     mCamera = mCameraArray[0];
 }
+
+bool BasicTutorial_00::handleKeyEvents_Camera_00(const OIS::KeyEvent& arg)
+{
+    bool flg_handled = false;
+
+    if (arg.key == OIS::KC_1 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(0,300,500));
+        mCameraArray[0]
+            ->setDirection(Vector3(0,-300,-500));
+        mCamera = mCameraArray[0];
+    }
+
+    if (arg.key == OIS::KC_2 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(500,300,0));
+        mCameraArray[0]
+            ->setDirection(Vector3(-500,-300,0));
+        mCamera = mCameraArray[0];
+    }
+
+    if (arg.key == OIS::KC_3 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(0,300,-500));
+        mCameraArray[0]
+            ->setDirection(Vector3(0,-300,500));
+        mCamera = mCameraArray[0];
+    }
+
+    if (arg.key == OIS::KC_4 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(-500,300,0));
+        mCameraArray[0]
+            ->setDirection(Vector3(500,-300,0));
+        mCamera = mCameraArray[0];
+    }
+
+    if (arg.key == OIS::KC_5 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(800,500,1000));
+        mCameraArray[0]
+            ->setDirection(Vector3(-800,-500,-1000));
+        mCamera = mCameraArray[0];
+    }
+
+    if (arg.key == OIS::KC_6 ) {
+        flg_handled = true;
+
+        mCameraArray[0]
+            ->setPosition(Vector3(-800,500,-1000));
+        mCameraArray[0]
+            ->setDirection(Vector3(800,-500,1000));
+        mCamera = mCameraArray[0];
+    }
+
+    return flg_handled;
+}

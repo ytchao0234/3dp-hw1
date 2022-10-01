@@ -19,8 +19,8 @@ void BasicTutorial_00::createLights_01(void)
     light3 = mSceneMgrArray[1]->createLight("Light3");
     light3->setType(Light::LT_POINT);
     light3->setPosition(Vector3(-50, 250, 100));
-    light3->setDiffuseColour(1.0, 1.0, 1.0);
-    light3->setSpecularColour(1.0, 1.0, 1.0);
+    light3->setDiffuseColour(0.0, 0.0, 1.0);
+    light3->setSpecularColour(0.0, 0.0, 1.0);
 }
 
 void BasicTutorial_00::createObject_01(void)

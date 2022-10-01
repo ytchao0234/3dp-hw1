@@ -63,6 +63,12 @@ protected:
     void createViewport_01(void);
     void createScene_00(void);
     void createScene_01(void);
+    //
+    bool handleKeyEvents(const OIS::KeyEvent&);
+    bool handleKeyEvents_Camera_00(const OIS::KeyEvent&);
+    //
+    bool keyPressed(const OIS::KeyEvent&);
+    bool keyReleased(const OIS::KeyEvent&);
 protected:
     SceneManager* mSceneMgrArray[2];
     Viewport* mViewportArray[2];

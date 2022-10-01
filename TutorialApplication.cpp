@@ -59,13 +59,44 @@ void BasicTutorial_00::createViewports(void)
     this->createViewport_01();
 }
 
-bool BasicTutorial_00::frameStarted(const FrameEvent& evt)
+bool BasicTutorial_00::handleKeyEvents(const OIS::KeyEvent& arg)
 {
     bool flg_handled = false;
-    mKeyboard->capture();
-    mMouse->capture();
 
-    return true;
+    flg_handled |= handleKeyEvents_Camera_00(arg);
+
+    return flg_handled;
+}
+
+bool BasicTutorial_00::keyPressed(const OIS::KeyEvent& arg)
+{
+    bool flg = true;
+    bool flg_handled = false;
+
+    flg_handled = handleKeyEvents(arg);
+    if (!flg_handled) BaseApplication::keyPressed(arg);
+
+    return flg;
+}
+
+bool BasicTutorial_00::keyReleased(const OIS::KeyEvent& arg)
+{
+    bool flg = true;
+
+    BaseApplication::keyReleased(arg);
+
+    return flg;
+}
+
+bool BasicTutorial_00::frameStarted(const FrameEvent& evt)
+{
+    bool flg = FrameListener::frameStarted(evt);
+
+    if (!flg) return flg;
+
+    flg = true;
+
+    return flg;
 }
 
 int main(int argc, char* argv[])
