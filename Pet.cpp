@@ -8,9 +8,10 @@ Pet::Pet(void):
     mEntity(nullptr),
     mVelocity(Vector3::ZERO),
     mRotationRadius(0.0),
-    mTheta(0.0),
+    mAngle(0.0),
     mAngularSpeed(0.0),
-    mAngularAcc(0.01),
+    mAngularAcc(0.5),
+    mMaxAngularSpeed(3.0),
     mActivated(true)
 {
 
@@ -21,23 +22,22 @@ Pet::~Pet(void)
 
 }
 
-void Pet::rotate(const Real& dt, Pet*& target)
+void Pet::rotate(const Real& dt, Pet* target)
 {
     if (!mSceneNode || !mActivated) return;
 
-    mTheta += mAngularSpeed;
+    mAngle += mAngularSpeed * dt;
 
-    if (mTheta < 0.0 && mAngularAcc < 0.0 ||
-        mTheta > 2.0 * PI && mAngularAcc > 0.0)
+    if (abs(mAngularSpeed) > mMaxAngularSpeed)
     {  
         mAngularSpeed = 0;
         mAngularAcc = -mAngularAcc;
     }
     mAngularSpeed += mAngularAcc * dt;
 
-    double x = mRotationRadius * cos(mTheta);
+    double x = mRotationRadius * cos(mAngle);
     double y = mSceneNode->getPosition().y;
-    double z = mRotationRadius * sin(mTheta);
+    double z = mRotationRadius * sin(mAngle);
 
     mSceneNode->setPosition(Vector3(x, y, z));
 

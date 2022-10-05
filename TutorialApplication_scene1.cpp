@@ -111,7 +111,7 @@ void BasicTutorial_00::createObjectGroup2_WavingRow_00(void)
 {
     int numberOfItems = 120;
     int L = 255;
-    double x = 0, y = 20, z = 250, r = 0, h = 0, fx = 0;
+    double x = 0, y = 20, z = 200, r = 0, h = 0, fx = 0;
 
     AxisAlignedBox bb;
     double cubeSize = 1.0, unitF = 1.0;
@@ -139,6 +139,37 @@ void BasicTutorial_00::createObjectGroup2_WavingRow_00(void)
         sceneNode->setScale(unitF, h, unitF);
         sceneNode->setPosition(x, y, z);
         sceneNode->attachObject(entity);
+    }
+}
+
+void BasicTutorial_00::createObjectGroup2_Balls_00(void)
+{
+    int numberOfItems = 8;
+    int itemGroupRadius = 300;
+    double x = 0, y = 20, z = 0, fx = 0;
+
+    for (int i = 0; i < numberOfItems; i += 1)
+    {
+        mBalls[i] = new Ball();
+
+        String entityName;
+        genNameUsingIndex("Balls", i, entityName);
+        mBalls[i]->mEntity = mSceneMgrArray[0]->createEntity(
+            entityName, "sphere.mesh");
+        mBalls[i]->mEntity->setMaterialName("Examples/SceneCubeMap1");
+
+        fx = i / (double) numberOfItems;
+        x = itemGroupRadius * cos(fx * PI * 2);
+        z = itemGroupRadius * sin(fx * PI * 2);
+
+        mBalls[i]->mSceneNode = mSceneMgrArray[0]
+            ->getRootSceneNode()
+            ->createChildSceneNode();
+
+        mBalls[i]->mSceneNode->setScale(0.2, 0.2, 0.2);
+        mBalls[i]->mSceneNode->setPosition(x, y, z);
+        mBalls[i]->setVelocity(mPet1);
+        mBalls[i]->mSceneNode->attachObject(mBalls[i]->mEntity);
     }
 }
 
@@ -186,6 +217,7 @@ void BasicTutorial_00::createScene_00(void)
     this->createObject_00();
     this->createObjectGroup1_WavingCircle_00();
     this->createObjectGroup2_WavingRow_00();
+    this->createObjectGroup2_Balls_00();
 }
 
 void BasicTutorial_00::createCamera_00(void)
@@ -288,4 +320,29 @@ void BasicTutorial_00::updatePets(const Real& dt)
 {
     mPet1->rotate(dt, mPet2);
     mPet2->rotate(dt, mPet1);
+}
+
+void BasicTutorial_00::updateBalls(const Real& dt)
+{
+    for (int i = 0; i < 8; i += 1)
+        mBalls[i]->projectile(dt);
+}
+
+void BasicTutorial_00::setTargetBallIndex(void)
+{
+    mTargetBallIndex = -1;
+    Real limitDistance = 120.0;
+
+    for (int i = 0; i < 8; i += 1)
+    {
+        Vector3 p0 = mPet2->mSceneNode->getPosition();
+        Vector3 p1 = mBalls[i]->mSceneNode->getPosition();
+        Real distance = p0.distance(p1);
+
+        if (distance < limitDistance)
+        {
+            mTargetBallIndex = i;
+            break;
+        }
+    }
 }

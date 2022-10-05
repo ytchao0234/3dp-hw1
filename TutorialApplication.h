@@ -28,6 +28,7 @@ You can define your own data members and functions.
 #include "reader_data.h"
 #include "SystemParameter.h"
 #include "Pet.h"
+#include "Ball.h"
 
 using namespace Ogre;
 
@@ -53,6 +54,7 @@ protected:
     //
     void createObjectGroup1_WavingCircle_00(void);
     void createObjectGroup2_WavingRow_00(void);
+    void createObjectGroup2_Balls_00(void);
     //
     void createLights_00(void);
     void createLights_01(void);
@@ -82,6 +84,8 @@ protected:
     void setViewport_B();
     //
     void updatePets(const Real&);
+    void updateBalls(const Real&);
+    void setTargetBallIndex(void);
 protected:
     SceneManager* mSceneMgrArray[2];
     Viewport* mViewportArray[2];
@@ -94,8 +98,11 @@ protected:
     //
     Pet* mPet1;
     Pet* mPet2;
+    Ball* mBalls[8];
     //
     bool mKeyState_P;
+    bool mKeyState_SPACE;
+    int mTargetBallIndex;
 };
 
 #endif // #ifndef __BasicTutorial_00_h_

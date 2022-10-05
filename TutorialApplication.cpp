@@ -17,7 +17,8 @@ using namespace Ogre;
 BasicTutorial_00::BasicTutorial_00(void):
 mTopViewportDimIndex(0),
 mViewportDimArraySize(4),
-mKeyState_P(false)
+mKeyState_P(false),
+mKeyState_SPACE(false)
 {
     mPet1 = new Pet();
     mPet2 = new Pet();
@@ -233,10 +234,24 @@ bool BasicTutorial_00::frameStarted(const FrameEvent& evt)
             mKeyState_P = false;
         }
     }
-    else
-        mKeyState_P = true;
+    else mKeyState_P = true;
+
+    if (mKeyboard->isKeyDown(OIS::KC_SPACE))
+    {
+        if (mKeyState_SPACE)
+        {
+            setTargetBallIndex();
+
+            if (mTargetBallIndex >= 0)
+                mBalls[mTargetBallIndex]->mActivated = true;
+
+            mKeyState_SPACE = false;
+        }
+    }
+    else mKeyState_SPACE = true;
 
     updatePets(evt.timeSinceLastFrame);
+    updateBalls(evt.timeSinceLastFrame);
 
     return flg;
 }

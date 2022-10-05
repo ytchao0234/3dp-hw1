@@ -11,14 +11,15 @@ class Pet
 public:
     Pet(void);
     ~Pet(void);
-    void rotate(const Real&, Pet*&);
+    void rotate(const Real&, Pet*);
 public:
     SceneNode* mSceneNode;
     Entity* mEntity;
     Vector3 mVelocity;
     Real mRotationRadius;
-    Real mTheta;
+    Real mAngle;
     Real mAngularSpeed;
     Real mAngularAcc;
+    Real mMaxAngularSpeed;
     bool mActivated;
 };
