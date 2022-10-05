@@ -33,12 +33,17 @@ using namespace Ogre;
 
 #define PI 3.141592654
 
+struct ViewportDim {
+    double left, top, width, height;
+};
+
 class BasicTutorial_00 : public BaseApplication
 {
 public:
     BasicTutorial_00(void);
     ~BasicTutorial_00(void);
 protected:
+    virtual void initViewportDimensions();
     virtual void chooseSceneManager(void);
     virtual void createScene(void);
     virtual void createCamera(void);
@@ -65,18 +70,32 @@ protected:
     void createScene_01(void);
     //
     bool handleKeyEvents(const OIS::KeyEvent&);
+    bool handleKeyEvents_Camera(const OIS::KeyEvent&);
     bool handleKeyEvents_Camera_00(const OIS::KeyEvent&);
+    bool handleKeyEvents_Viewport(const OIS::KeyEvent&);
     //
     bool keyPressed(const OIS::KeyEvent&);
     bool keyReleased(const OIS::KeyEvent&);
+    //
+    void setViewport_M();
+    void setViewport_N();
+    void setViewport_B();
+    //
+    void updatePets(const Real&);
 protected:
     SceneManager* mSceneMgrArray[2];
     Viewport* mViewportArray[2];
     Camera* mCameraArray[2];
     OgreBites::SdkCameraMan* mCameraManArray[2];
-
+    //
+    ViewportDim mViewportDimArray[4];
+    int mTopViewportDimIndex;
+    int mViewportDimArraySize;
+    //
     Pet* mPet1;
     Pet* mPet2;
+    //
+    bool mKeyState_P;
 };
 
 #endif // #ifndef __BasicTutorial_00_h_

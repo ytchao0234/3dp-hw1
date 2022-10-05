@@ -14,10 +14,14 @@
 
 using namespace Ogre;
 
-BasicTutorial_00::BasicTutorial_00(void)
+BasicTutorial_00::BasicTutorial_00(void):
+mTopViewportDimIndex(0),
+mViewportDimArraySize(4),
+mKeyState_P(false)
 {
     mPet1 = new Pet();
     mPet2 = new Pet();
+    initViewportDimensions();
 }
 
 BasicTutorial_00::~BasicTutorial_00(void)
@@ -28,6 +32,29 @@ BasicTutorial_00::~BasicTutorial_00(void)
     delete[] mCameraArray;
     delete[] mViewportArray;
     delete[] mCameraManArray;
+}
+
+void BasicTutorial_00::initViewportDimensions()
+{
+    mViewportDimArray[0].left = 0.0;
+    mViewportDimArray[0].top = 0.0;
+    mViewportDimArray[0].width = 0.25;
+    mViewportDimArray[0].height = 0.25;
+    //
+    mViewportDimArray[1].left = 0.75;
+    mViewportDimArray[1].top = 0.0;
+    mViewportDimArray[1].width = 0.25;
+    mViewportDimArray[1].height = 0.25;
+    //
+    mViewportDimArray[2].left = 0.75;
+    mViewportDimArray[2].top = 0.75;
+    mViewportDimArray[2].width = 0.25;
+    mViewportDimArray[2].height = 0.25;
+    //
+    mViewportDimArray[3].left = 0.0;
+    mViewportDimArray[3].top = 0.75;
+    mViewportDimArray[3].width = 0.25;
+    mViewportDimArray[3].height = 0.25;
 }
 
 void BasicTutorial_00::chooseSceneManager(void)
@@ -59,11 +86,112 @@ void BasicTutorial_00::createViewports(void)
     this->createViewport_01();
 }
 
-bool BasicTutorial_00::handleKeyEvents(const OIS::KeyEvent& arg)
+bool BasicTutorial_00::handleKeyEvents_Camera(const OIS::KeyEvent& arg)
 {
     bool flg_handled = false;
 
     flg_handled |= handleKeyEvents_Camera_00(arg);
+
+    return flg_handled;
+}
+
+bool BasicTutorial_00::handleKeyEvents_Viewport(const OIS::KeyEvent& arg)
+{
+    bool flg_handled = false;
+
+    if (arg.key == OIS::KC_M ) {
+        flg_handled = true;
+        setViewport_M();
+    }
+
+    if (arg.key == OIS::KC_N ) {
+        flg_handled = true;
+        setViewport_N();
+    }
+
+    if (arg.key == OIS::KC_B ) {
+        flg_handled = true;
+        setViewport_B();
+    }
+
+    return flg_handled;
+}
+
+void BasicTutorial_00::setViewport_M()
+{
+    mWindow->removeViewport(mViewportArray[0]->getZOrder());
+    mWindow->removeViewport(mViewportArray[1]->getZOrder());
+    //
+    mViewportArray[0] = mWindow->addViewport(mCameraArray[1]);
+    mViewportArray[0]->setBackgroundColour(ColourValue(0,0,1));
+
+    mCameraArray[1]->setAspectRatio(
+        Real(mViewportArray[0]->getActualWidth()) /
+        Real(mViewportArray[0]->getActualHeight())
+    );
+
+    mCamera = mCameraArray[1];
+    //
+    mViewportArray[1] = mWindow->addViewport(
+        mCameraArray[0], 1,
+        0.0, 0.0, 0.25, 0.25
+    );
+    mViewportArray[1]->setBackgroundColour(ColourValue(0,1,0));
+
+    mCameraArray[0]->setAspectRatio(
+        Real(mViewportArray[1]->getActualWidth()) /
+        Real(mViewportArray[1]->getActualHeight())
+    );
+
+    mViewportArray[1]->setOverlaysEnabled(false);
+
+    mCamera = mCameraArray[0];
+}
+
+void BasicTutorial_00::setViewport_N()
+{
+    mWindow->removeViewport(mViewportArray[0]->getZOrder());
+    mWindow->removeViewport(mViewportArray[1]->getZOrder());
+    //
+    mViewportArray[0] = mWindow->addViewport(mCameraArray[0]);
+    mViewportArray[0]->setBackgroundColour(ColourValue(0,1,0));
+
+    mCameraArray[0]->setAspectRatio(
+        Real(mViewportArray[0]->getActualWidth()) /
+        Real(mViewportArray[0]->getActualHeight())
+    );
+
+    mCamera = mCameraArray[0];
+    //
+    mViewportArray[1] = mWindow->addViewport(
+        mCameraArray[1], 1,
+        0.0, 0.0, 0.25, 0.25
+    );
+    mViewportArray[1]->setBackgroundColour(ColourValue(0,0,1));
+
+    mCameraArray[1]->setAspectRatio(
+        Real(mViewportArray[1]->getActualWidth()) /
+        Real(mViewportArray[1]->getActualHeight())
+    );
+
+    mViewportArray[1]->setOverlaysEnabled(false);
+
+    mCamera = mCameraArray[1];
+}
+
+void BasicTutorial_00::setViewport_B()
+{
+    mTopViewportDimIndex = (mTopViewportDimIndex + 1) % mViewportDimArraySize;
+    ViewportDim vd = mViewportDimArray[mTopViewportDimIndex];
+    mViewportArray[1]->setDimensions(vd.left, vd.top, vd.width, vd.height);
+}
+
+bool BasicTutorial_00::handleKeyEvents(const OIS::KeyEvent& arg)
+{
+    bool flg_handled = false;
+
+    flg_handled |= handleKeyEvents_Camera(arg);
+    flg_handled |= handleKeyEvents_Viewport(arg);
 
     return flg_handled;
 }
@@ -94,7 +222,21 @@ bool BasicTutorial_00::frameStarted(const FrameEvent& evt)
 
     if (!flg) return flg;
 
-    flg = true;
+    mKeyboard->capture();
+
+    if (mKeyboard->isKeyDown(OIS::KC_P))
+    {
+        if (mKeyState_P)
+        {
+            mPet1->mActivated = !mPet1->mActivated;
+            mPet2->mActivated = !mPet2->mActivated;
+            mKeyState_P = false;
+        }
+    }
+    else
+        mKeyState_P = true;
+
+    updatePets(evt.timeSinceLastFrame);
 
     return flg;
 }

@@ -1,17 +1,24 @@
 #pragma once
 #include "BaseApplication.h"
+#include "reader_data.h"
 
 using namespace Ogre;
+
+#define PI 3.141592654
 
 class Pet
 {
 public:
     Pet(void);
     ~Pet(void);
-    void translate(const Real&);
+    void rotate(const Real&, Pet*&);
 public:
     SceneNode* mSceneNode;
     Entity* mEntity;
     Vector3 mVelocity;
-    bool mActivate;
+    Real mRotationRadius;
+    Real mTheta;
+    Real mAngularSpeed;
+    Real mAngularAcc;
+    bool mActivated;
 };
